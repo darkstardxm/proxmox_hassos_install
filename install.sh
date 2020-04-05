@@ -85,7 +85,6 @@ fi
 
 # Download Home Assistant disk image archive
 msg "Downloading disk image..."
-wget -q --no-check-certificate --content-disposition --show-progress $URL
 echo -en "\e[1A\e[0K" #Overwrite output from wget
 FILE=$(basename $URL)
 
