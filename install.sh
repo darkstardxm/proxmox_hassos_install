@@ -28,11 +28,11 @@ function msg() {
   echo -e "$TEXT"
 }
 function cleanup() {
-  popd >/dev/null
+  popd >/dev/tmp
   rm -rf $TEMP_DIR
 }
 TEMP_DIR=$(mktemp -d)
-pushd $TEMP_DIR >/dev/null
+pushd $TEMP_DIR >/dev/tmp
 
 # Select storage location
 while read -r line; do
@@ -110,9 +110,9 @@ msg "Creating VM..."
 VM_NAME=$(sed -e "s/\_//g" -e "s/.${RELEASE_EXT}//" <<< $FILE)
 qm create $VMID -agent 1 -bios ovmf -name $VM_NAME -net0 virtio,bridge=vmbr0 \
   -onboot 1 -ostype l26 -scsihw virtio-scsi-pci
-pvesm alloc $STORAGE $VMID $DISK0 128 1>&/dev/null
-qm importdisk $VMID ${FILE%".gz"} $STORAGE ${IMPORT_OPT:-} 1>&/dev/null
+pvesm alloc $STORAGE $VMID $DISK0 128 1>&/dev/tmp
+qm importdisk $VMID ${FILE%".gz"} $STORAGE ${IMPORT_OPT:-} 1>&/dev/tmp
 qm set $VMID -bootdisk sata0 -efidisk0 ${DISK0_REF},size=128K \
-  -sata0 ${DISK1_REF},size=6G > /dev/null
+  -sata0 ${DISK1_REF},size=6G > /dev/tmp
 
 info "Completed Successfully! New VM ID is \e[1m$VMID\e[0m."
