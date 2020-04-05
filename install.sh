@@ -90,7 +90,7 @@ FILE=$(basename $URL)
 
 # Extract Home Assistant disk image
 msg "Extracting disk image..."
-gunzip -f /home/$FILE
+gunzip -f $FILE
 
 # Create variables for container disk
 STORAGE_TYPE=$(pvesm status -storage $STORAGE | awk 'NR>1 {print $2}')
